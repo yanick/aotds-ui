@@ -1,28 +1,18 @@
 import React from 'react';
-import _ from 'lodash';
 
-
-
-export default class ObjectPanel extends React.Component {
-
-orderMovement( type, value ) {
-    console.log("yo!");
-    this.props.dispatchOrderMovement({
-        [type]: parseInt(value)
-    });
-}
-
-render() {
+export default function() {
     let ship = this.props.object;
 
     return (
 <div>
-    <div className="object_name">{ship.name}</div>
+    <div>{ship.name}</div>
 
     <div>
         heading:  3
         velocity: 4
     </div>
+
+    <label>Remaining engine power: 3</label>
 
         <div>Orders sent</div>
 
@@ -33,7 +23,6 @@ render() {
             <input type="range" 
                 min="0"
                 max="5"
-                onChange={ e => this.orderMovement('thrust', e.target.value) }
                 /> 
 
 
@@ -61,5 +50,3 @@ render() {
     </div>
                  //<div objects={objects} ship={object} assign_weapon={assign_weapon} />
 )}
-
-}
