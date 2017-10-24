@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import generic_ship from "./shapes/ship/generic.svg";
 
-import "./BattleMap/style.scss";
+import "./BattleMap/style.css";
 
 const SVG_SCALE = 35;
 

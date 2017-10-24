@@ -6,9 +6,18 @@ const path = require('path');
 module.exports = {
   module: {
     rules: [
+        { test: /\.(woff|ttf|eot)$/i, loader: 'null-loader' },
       { test: /\.svg$/, //loader: iconPlugin.extract(), include: path.resolve(__dirname, '../')  },
           loader: 'svg-sprite-loader', include: path.resolve(__dirname, '../') },
-      {  test: /\.scss$/, loaders: ["style-loader", "css-loader", "sass-loader"] }
+      {  test: /\.css$/, loaders: [
+           'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'postcss-loader', options: { sourceMap: true }  },
+          'resolve-url-loader',
+          { loader: 'sass-loader', options: { sourceMap: true } }
+      ]
+      },
+      { test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/ },
     ]
   },
      resolve: {

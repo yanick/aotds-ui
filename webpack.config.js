@@ -15,14 +15,18 @@ module.exports = {
   },
   module: {
     rules: [
+        { test: /\.(woff|ttf|eot)$/i, loader: 'null-loader' },
       { test: /\.svg$/, loader: 'svg-sprite-loader' },
-    ],
-    loaders: [
-      { test: /\.svg$/, loader: 'svg-sprite-loader' },
+      {  test: /\.css$/, use: [
+           'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'postcss-loader', options: { sourceMap: true }  },
+          'resolve-url-loader',
+          { loader: 'sass-loader', options: { sourceMap: true } }
+      ]
+      },
       { test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/ },
-      {  test: /\.scss$/, loaders: ["style-loader", "css-loader", "sass"] },
-      { test: /\.css$/, loader: "style-loader!css-loader" },
-    ]
+    ],
   },
   plugins: [HtmlWebpackPluginConfig]
 }
