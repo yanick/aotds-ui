@@ -1,20 +1,36 @@
-import React from 'react';
-import { storiesOf, action } from '@storybook/react';
-import { withKnobs, text, number } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/vue';
+import { withKnobs, text, number, boolean } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 //import { action } from '@storybook/addon-actions';
 
-import CommandPanel from './index';
+import CommandPanel from './index.vue';
 
 let enkidu = {
-    name: 'enkidu'
+    name: 'Enkidu',
+    navigation: {
+        course: 3,
+        velocity: 4,
+    },
+    drive_rating: 4,
+    orders: {
+        done: false,
+    },
 };
 
+console.log(CommandPanel);
+CommandPanel.computed.order_thrust.set = action( 'set-thrust' );
+
+
 const stories = storiesOf('CommandPanel', module)
-//.addDecorator( withKnobs )
+.addDecorator( withKnobs )
 .add('basic', () => {
-    return <CommandPanel 
-        object={enkidu}
-        dispatchOrderMovement={ action( 'ORDER_MOVEMENT' ) }
-        ></CommandPanel>
-  }
+    enkidu.orders.done = boolean( 'orders sent');
+    console.log( '>>', enkidu.orders.done );
+    return {
+        components: {  CommandPanel },
+        data: () => ({
+            ship: enkidu,
+        }),
+        template: '<CommandPanel :ship="ship" />'
+    }}
 )
