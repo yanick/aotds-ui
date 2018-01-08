@@ -11,10 +11,10 @@
 import { coords2map, heading2angle } from './utils';
 
 export default {
-    props: [ 'navigation' ],
+    props: [ 'ship' ],
     computed: {
-        heading: function(){ return this.navigation.heading },
-        coords: function(){ return this.navigation.coords },
+        heading: function(){ return this.ship.navigation.heading },
+        coords: function(){ return this.ship.navigation.coords },
         coordsTransform: function() {
             let t = coords2map(this.coords).join(',');
             return `rotate( ${ heading2angle(this.heading) }, ${ t } ) translate(${ t })`
