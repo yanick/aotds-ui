@@ -1,16 +1,25 @@
 <template>
-    <svg id="battleMap">
+    <svg ref="myself" id="battleMap">
 
         <ShipShape v-for="ship in ships" v-bind="ship" />
     </svg>
 </template>
 
 <script>
+import svg_pan_zoom from 'svg-pan-zoom';
 import ShipShape from './ShipShape.vue';
 
 export default {
     props: [ 'ships' ],
-    components: { ShipShape }
+    components: { ShipShape },
+    mounted: function() {
+        console.log( "mounteD!" );
+        svg_pan_zoom( this.$el ,{
+                  zoomEnabled: true,
+                  controlIconsEnabled: true,
+                  fit: false,
+                  center: true,});
+    }
 };
 
 </script>
