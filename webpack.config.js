@@ -25,8 +25,12 @@ module.exports = {
           { loader: 'sass-loader', options: { sourceMap: true } }
       ]
       },
+      { test: /\.vue$/, loader: 'vue-loader' },
       { test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/ },
     ],
   },
+  resolve: {
+    alias: { 'vue$': 'vue/dist/vue.esm.js' }
+  }
   plugins: [HtmlWebpackPluginConfig]
 }

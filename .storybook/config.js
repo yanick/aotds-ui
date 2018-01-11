@@ -1,4 +1,4 @@
-import { configure } from '@storybook/react';
+import { configure } from '@storybook/vue';
 import './addons';
 
 const req = require.context('../src/components', true, /stories\.js$/)

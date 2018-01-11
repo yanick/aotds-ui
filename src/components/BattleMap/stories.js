@@ -17,7 +17,7 @@ const stories = storiesOf('BattleMap', module)
 .addDecorator( withKnobs )
 .add('basic', () => {
     ships[1].navigation = {
-        coords: [ number( "siduri x", 200 ), number( "siduri y", -100 ) ],
+        coords: [ number( "siduri x", 1000 ), number( "siduri y", -100 ) ],
         heading: number( "siduri heading", 3 )
     };
 
