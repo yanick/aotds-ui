@@ -1,55 +1,26 @@
 <template>
-<div>
-    <div id="mainViewContainer">
+    <SvgPanZoom>
     <svg id="battleMap">
 
         <ShipCourse v-for="ship in ships" :ship="ship" />
 
         <Ship v-for="ship in ships" :ship="ship" />
     </svg>
-    </div>
-
-
- <div id="thumbViewContainer">
-      <svg id="scopeContainer" class="thumbViewClass">
-        <g>
-          <rect id="scope" fill="red" fill-opacity="0.1" stroke="red" stroke-width="2px" x="0" y="0" width="0" height="0"/>
-          <line id="line1" stroke="red" stroke-width="2px" x1="0" y1="0" x2="0" y2="0"/>
-          <line id="line2" stroke="red" stroke-width="2px" x1="0" y1="0" x2="0" y2="0"/>
-        </g>
-      </svg>
-      <svg id="thumbView" class="thumbViewClass">
-            <ShipCourse v-for="ship in ships" :ship="ship" />
-
+      <svg id="thumbView" class="thumbViewClass" slot="thumbnail">
             <Ship v-for="ship in ships" :ship="ship" />
       </svg>
-</div>
-
-</div>
-
+    </SvgPanZoom>
 </template>
 
 <script>
-import svg_pan_zoom from 'svg-pan-zoom';
 import Ship from './Ship.vue';
 import ShipCourse from './ShipCourse.vue';
-import thumbnailViewer from './thumbnailViewer';
+
+import SvgPanZoom from 'vue-svg-pan-zoom';
 
 export default {
     props: [ 'ships' ],
-    components: { Ship, ShipCourse },
-    mounted: function() {
-        console.log( "mounteD!" );
-       thumbnailViewer({
-           mainViewId: 'battleMap',
-           thumbViewId: 'thumbView'
-       });
-//        svg_pan_zoom( '#battleMap' ,{
-//                  zoomEnabled: true,
-//                  controlIconsEnabled: true,
-//                  fit: false,
-//                  center: true,});
-    }
+    components: { Ship, ShipCourse, SvgPanZoom },
 };
 
 </script>

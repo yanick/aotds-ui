@@ -6955,6 +6955,12 @@ vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
+vue-svg-pan-zoom@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/vue-svg-pan-zoom/-/vue-svg-pan-zoom-0.0.2.tgz#9486aed361156755da189312c75eb54adedd9a4f"
+  dependencies:
+    svg-pan-zoom "^3.5.3"
+
 vue-template-compiler@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.2.tgz#6f198ebc677b8f804315cd33b91e849315ae7177"

@@ -33,6 +33,7 @@
     "vue": "^2.5.2",
     "vue-class-component": "^6.1.0",
     "vue-loader": "^13.3.0",
+    "vue-svg-pan-zoom": "^0.0.2",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
