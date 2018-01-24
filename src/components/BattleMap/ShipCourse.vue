@@ -1,5 +1,5 @@
 <template>
-    <g v-if="has_course">
+    <g v-if="has_course" class="course">
         <path :d="path"
                 fill="none"
                 stroke="red" stroke-width="3" />
@@ -11,6 +11,12 @@
         </g>
     </g>
 </template>
+
+<style>
+.course {
+    opacity: 0.5;
+}
+</style>
 
 <script>
 import _ from 'lodash';
