@@ -1,36 +1,21 @@
 <template>
     <div class="commandPanel">
       <div>
-          <div class="ship_name">{{ship.name}}</div>
+          <div class="ship_name">{{ship_name}}</div>
 
-          <div>heading: {{ heading }}, 
-              velocity: {{ velocity }}</div>
+          <div>heading: {{ heading }} 
+              velocity: {{ velocity }}
+              drive rating: {{ drive_rating }}
+          </div>
 
-          <input type="button" 
-                 :value="order_label" 
-            />
-        <div>Orders sent</div>
+          <input type="button" :value="orders_sent ? 'orders sent' : 'send orders'" />
 
         <FieldSet legend="navigation">
             <div>
-                <div>
-                    heading: XXX velocity: XXX
-                </div>
-                <div>drive rating: XXX</div>
-                <div>
-                    <label>thrust 
-                        <span>
-                            {{ move_ranges.thrust[0] }}
-                            <input type="range" 
-                                :min="move_ranges.thrust[0]"
-                                :max="move_ranges.thrust[1]" 
-                                v-model="order_thrust" />
-                            {{ move_ranges.thrust[1] }}
-                            -
-                            <b>10</b>
-                        </span>
-                    </label>
-                </div>
+                <NavSlider :label="field" :min="maneuver[field][0]"
+                :max="maneuver[field][1]" :value="nav_orders[field]" 
+                :change="send_single_nav_order(field)"
+                    v-for="field in nav_fields" />
                 <label>turn 
                     <input type="range" min="0" max="20" value="10" />
                 </label>
@@ -49,7 +34,7 @@
                 type="range"
                 min="0"
                 max="5"
-                onChange={e => this.orderMovement("thrust", e.target.value)}
+                onChange={e => this.orderMovement("thrust", value)}
               />
               <input type="range" name="thrust" />
               <span>3</span>
@@ -72,80 +57,49 @@
 
 import _ from 'lodash';
 import FieldSet from './FieldSet.vue';
-
-let Ship = {
-    name: 'string',
-    id: { type: 'string', required: true },
-    drive_rating: 'number',
-    navigation: {
-        heading: 'number',
-        velocity: 'number',
-    },
-    orders: {
-        done: 'boolean',
-        navigation: {
-            thrust: 'number',
-            bank: 'number',
-            thrust: 'number',
-        },
-    },
-};
-
-let MoveRanges = {
-    thrust: { ArrayOf: [ 'number', 'number' ], },
-    bank:   { ArrayOf: [ 'number', 'number' ], },
-    turn:   { ArrayOf: [ 'number', 'number' ], },
-}
+import NavSlider from './NavSlider.vue';
 
 import u from 'updeep';
 
-function ship_move_ranges( ship, orders ) {
-    if(!orders) {
-        orders = _.get( ship, 'orders.navigation', {} );
-        
-        [ 'thrust', 'bank', 'turn' ].filter( a => ! orders[a] ).forEach
-    }
+const expand_computed = obj => _.mapValues( obj, function(value,key) {
+    if( typeof value !== 'string' && !Array.isArray(value) ) return value;
 
-    ['thrust','bank','turn'].forEach( a => {
-        orders = u({ [a]: 0}, orders);
-    });
+    if( typeof value === 'string' ) value = [ value ];
 
-    let rating_left = _.get( ship, 'drive.rating[0]', 0 ) - _.sum( [ 'thrust', 'bank',
-        'turn' ].map( a => _.get( orders, a, 0 ) ) );
+    value[0] = value[0].replace( '*', key );
 
-    let ranges = {
-        thrust: [ -rating_left, rating_left ].map( x => x + orders.thrust )
-    };
+    console.log(value);
 
-    return {
-        thrust: [ 0, 5 ],
-        turn:   [ -3, 3 ],
-        bank:   [ -3, 3 ],
-    };
-}
+    return function() { return _.get(this,...value) };
+});
 
 // vue2-redux?
 export default {
-    props: [ 'ship' ],
-    components: { FieldSet },
-    computed: {
+    props: [ 'ship', 'send_orders' ],
+    components: { FieldSet, NavSlider },
+    data: () => ({ order_thrust: 0, nav_fields: [ 'thrust', 'turn', 'bank' ] }),
+    methods: {
+        send_single_nav_order: function( path ) {
+            return value  => 
+                this.send_orders( this.ship.id, _.set({}, 'navigation.' + path, value ) );
+        },
+        
+        stuff: function(event) { console.log(event.target.value) }
+    },
+    computed: expand_computed({
+        ship_name:    [ 'ship.name', 'Unknown' ],
+        heading:      'ship.navigation.*',
+        velocity:     'ship.navigation.*',
+        maneuver:     [ 'ship.navigation.*', { thrust: [0,0], turn: [0,0],
+            bank: [0,0] } ],
+        nav_orders:     [ 'ship.orders.navigation', { thrust: 0, turn: 0,
+            bank: 0 } ],
+        drive_rating: 'ship.*',
+        orders_sent:  [ 'ship.orders.done', false ],
         move_ranges: function() {
             return ship_move_ranges(this.ship);
         },
-        projected_course: function() { },
-        heading:  function() { return _.get( this, 'ship.navigation.heading', 0 ) },
-        velocity: function() { return _.get( this, 'ship.navigation.velocity', 0 ) },
-        orders_sent: function() { 
-            return _.get( this, 'ship.orders.done', false ) },
-        order_label: function() { return this.orders_sent ? 'orders sent' :
-                'send orders' },
-        order_thrust: {
-            get() { return 2 },
-            set(value) { console.log('yo',value); }
-
-        },
-//        order_thrust: function() { return _.get(this, 'ship.orders.navigation.thrust', 0 ) }
-    }
+    })
 }
 
 </script>

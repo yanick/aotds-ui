@@ -26,7 +26,6 @@ module.exports = {
       ]
       },
       { test: /\.vue$/, loader: 'vue-loader' },
-      { test: /\.jsx?$/, loader: 'babel-loader', exclude: /node_modules/ },
     ],
   },
   resolve: {
