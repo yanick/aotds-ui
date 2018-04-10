@@ -1,26 +1,36 @@
 <template>
-    <SvgPanZoom>
+    <SvgPanZoom
+        :zoomEnabled="true"
+        :controlIconsEnabled="true"
+        :fit="false"
+        :center="true"
+    >
     <svg id="battleMap">
 
-        <ShipCourse v-for="ship in ships" :ship="ship" />
+        <ShipCourse v-for="ship in ships" :ship="ship"
+            :key="ship.id" />
 
-        <Ship v-for="ship in ships" :ship="ship" />
+        <Ship v-for="ship in ships" :ship="ship" :key="ship.id" />
     </svg>
       <svg id="thumbView" class="thumbViewClass" slot="thumbnail">
-            <Ship v-for="ship in ships" :ship="ship" />
+            <Ship v-for="ship in ships" :ship="ship" :key="ship.id" />
       </svg>
     </SvgPanZoom>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import Ship from './Ship.vue';
 import ShipCourse from './ShipCourse.vue';
 
 import SvgPanZoom from 'vue-svg-pan-zoom';
 
 export default {
-    props: [ 'ships' ],
     components: { Ship, ShipCourse, SvgPanZoom },
+    computed: {
+        ships: function(){ return this.$store.getters.get_ships },
+    },
 };
 
 </script>
