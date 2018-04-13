@@ -8,12 +8,12 @@
     <svg id="battleMap">
 
         <ShipCourse v-for="ship in ships" :ship="ship"
-            :key="ship.id" />
+            />
 
-        <Ship v-for="ship in ships" :ship="ship" :key="ship.id" />
+         <Ship v-for="ship in ships" :ship="ship" /> 
     </svg>
       <svg id="thumbView" class="thumbViewClass" slot="thumbnail">
-            <Ship v-for="ship in ships" :ship="ship" :key="ship.id" />
+            <Ship v-for="ship in ships" :ship="ship" />
       </svg>
     </SvgPanZoom>
 </template>

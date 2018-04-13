@@ -1,4 +1,5 @@
 <template>
+
     <g v-if="has_course" class="course">
         <path :d="path"
                 fill="none"
@@ -20,27 +21,30 @@
 
 <script>
 import _ from 'lodash';
+import fp from 'lodash/fp';
+
+import { plot_movement } from '../../../node_modules/aotds-battle/lib/movement';
 
 import { coords2map, heading2angle } from './utils';
 
 export default {
     props: [ 'ship' ],
     computed: {
-        has_course: function() { return this.course !== false },
+        has_course: function() { return !!this.course },
         course: function() { 
-            return _.get( this, 'ship.navigation.course', false );
+            return fp.get( 'navigation' )(plot_movement( this.ship,
+                fp.get('orders.navigation')(this.ship) ));
         },
         path: function() {
-            return 'M ' +
-                    this.course.map( p => p.coords ).map( coords2map )
-                    .map( c => c.join( ',' ) ).join( ' L ' ) ;
+            return 'M ' + 
+                    fp.getOr([])('trajectory')(this.course
+                    ).map( p => p.coords ).map( coords2map )
+                    .map( c => c.join( ',' ) ).join( ' L ' ) ; 
         },
         coordsTransform: function() {
-            if( !this.course ) return { };
-            let c = this.course;
-            let p = c[ c.length - 1 ];
-            let t = coords2map(p.coords).join(',');
-            return `rotate( ${ heading2angle(p.heading) }, ${ t } ) translate(${ t })`
+            if( !this.has_course ) return '';
+            let t = coords2map(this.course.coords).join(',');
+            return `rotate( ${ heading2angle(this.course.heading) }, ${ t } ) translate(${ t })`
         }
     },
 };
