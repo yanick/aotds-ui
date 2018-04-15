@@ -1,19 +1,27 @@
 <template>
-    <SvgPanZoom
-        :zoomEnabled="true"
-        :controlIconsEnabled="true"
-        :fit="false"
-        :center="true"
+    <SvgPanZoom :panTo="pan_coords" :onSVGPanZoomLoad="debug"
     >
-    <svg id="battleMap">
+    <svg id="battleMap" >
+        <g>
+
+          <circle cx="0" cy="0" r="10" stroke="black" stroke-width="3"
+          fill="red" />
+            <circle cx="100" cy="100" r="10" stroke="black" stroke-width="3"
+                                                          fill="blue" />
 
         <ShipCourse v-for="ship in ships" :ship="ship"
             />
 
          <Ship v-for="ship in ships" :ship="ship" /> 
+        </g>
     </svg>
       <svg id="thumbView" class="thumbViewClass" slot="thumbnail">
+          <g>
             <Ship v-for="ship in ships" :ship="ship" />
+          <circle cx="100" cy="100" r="1" stroke="black" stroke-width="0.01" />
+          <circle cx="100" cy="110" r="1" stroke="black" stroke-width="0.01" />
+          </g>
+
       </svg>
     </SvgPanZoom>
 </template>
@@ -24,12 +32,29 @@ import { mapGetters } from 'vuex';
 import Ship from './Ship.vue';
 import ShipCourse from './ShipCourse.vue';
 
-import SvgPanZoom from 'vue-svg-pan-zoom';
+import SvgPanZoom from '../../../node_modules/vue-svg-pan-zoom/src/index.js';
+
+import { coords2map } from './utils';
 
 export default {
+    data: () => ({ svgpanzoom: null }),
     components: { Ship, ShipCourse, SvgPanZoom },
     computed: {
         ships: function(){ return this.$store.getters.get_ships },
+        ...mapGetters([ 'center_on' ]),
+        pan_coords: function() {
+            if( !this.center_on ) return null;
+            let coords = coords2map(this.center_on);
+            return {
+                x: coords[0],
+                y: coords[1],
+            };
+        }
+    },
+    methods: {
+        debug: function(svg) {
+            window.ssh = svg;
+        }
     },
 };
 

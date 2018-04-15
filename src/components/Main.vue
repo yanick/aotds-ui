@@ -4,8 +4,11 @@
         <BattleHeader />
         <Auth /> 
     </div>
-    <div>
-        <BattleMap />
+    <div id="main_section">
+        <div id="battlemap"> <BattleMap /></div>
+        <div id="rightcolumn">
+            <ListObjects />
+        </div>
     </div>
     </div>
 </template>
@@ -15,9 +18,10 @@
 import Auth from './Auth/index.vue';
 import BattleHeader from './BattleHeader.vue';
 import BattleMap from './BattleMap/index.vue';
+import ListObjects from './ListObjects.vue';
 
 export default {
-    components: { Auth, BattleHeader, BattleMap },
+    components: { Auth, BattleHeader, BattleMap, ListObjects },
 };
 
 </script>
@@ -33,6 +37,13 @@ export default {
 
     & #battle_header { lost-column: 3/4 }
     & #auth_section  { lost-column: 1/4 }
+}
+
+#main_section {
+    lost-flex-container: row;
+
+    & #battlemap { lost-column: 3/4 }
+    & #rightcolumn  { lost-column: 1/4 }
 }
 
 

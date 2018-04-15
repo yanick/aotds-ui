@@ -8,11 +8,27 @@
 
 <script>
 
+import { mapGetters, mapMutations } from 'vuex';
+
 import { coords2map, heading2angle } from './utils';
 
 export default {
     props: [ 'ship' ],
+    methods: mapMutations([ 'center_on_selection' ]),
     computed: {
+        ...mapGetters([ 'should_center_on_selection', 'selected_object' ]),
+        must_center: function() {
+            console.log('!!!',this.should_center_on_selection);
+            if( !this.should_center_on_selection ) return false;
+
+            if( !this.selected_object || this.selected_object.id !== this.ship.id )
+                return false;
+
+            console.log("but now we should flip");
+            this.center_on_selection(false);
+
+            return true;
+        },
         heading: function(){ return this.ship.navigation.heading },
         coords: function(){ return this.ship.navigation.coords },
         coordsTransform: function() {
