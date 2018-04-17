@@ -1,25 +1,20 @@
 <template>
-    <SvgPanZoom :panTo="pan_coords" :onSVGPanZoomLoad="debug"
-    >
+    <SvgPanZoom :panTo="pan_coords" >
     <svg id="battleMap" >
-        <g>
 
-          <circle cx="0" cy="0" r="10" stroke="black" stroke-width="3"
-          fill="red" />
-            <circle cx="100" cy="100" r="10" stroke="black" stroke-width="3"
-                                                          fill="blue" />
-
+          <g>
+        <rect v-bind="battle_area"  fill="none" stroke="none" />
         <ShipCourse v-for="ship in ships" :ship="ship"
             />
 
          <Ship v-for="ship in ships" :ship="ship" /> 
-        </g>
+          </g>
     </svg>
       <svg id="thumbView" class="thumbViewClass" slot="thumbnail">
           <g>
+            <rect v-bind="battle_area" fill="none" stroke="none" />
+
             <Ship v-for="ship in ships" :ship="ship" />
-          <circle cx="100" cy="100" r="1" stroke="black" stroke-width="0.01" />
-          <circle cx="100" cy="110" r="1" stroke="black" stroke-width="0.01" />
           </g>
 
       </svg>
@@ -27,6 +22,7 @@
 </template>
 
 <script>
+import fp from 'lodash/fp';
 import { mapGetters } from 'vuex';
 
 import Ship from './Ship.vue';
@@ -36,24 +32,56 @@ import SvgPanZoom from '../../../node_modules/vue-svg-pan-zoom/src/index.js';
 
 import { coords2map } from './utils';
 
+const min_max = fp.over([ Math.min, Math.max ]);
+
 export default {
     data: () => ({ svgpanzoom: null }),
     components: { Ship, ShipCourse, SvgPanZoom },
     computed: {
         ships: function(){ return this.$store.getters.get_ships },
+        battle_area: function() {
+            console.log('ah');
+            if (!this.ships || this.ships.length == 0) return;
+            console.log('oh');
+            console.log(this.ships);
+            let max_velocity = fp.max( this.ships.map( s => s.navigation.velocity ) );
+            let coords = fp.map( 'navigation.coords' )(this.ships);
+            let mm = [ 0, 1 ].map( i => coords.map( c => c[i] ) ).map( x =>
+                min_max(...x) );
+
+            let min_point = coords2map([ 
+                mm[0][0] - max_velocity,
+                mm[1][1] - max_velocity,
+            ]);
+
+            let max_point = coords2map([
+                mm[0][1] + max_velocity,
+                mm[1][0] + max_velocity,
+            ]);
+
+            let x = {
+                x: min_point[0],
+                y: min_point[1],
+                width: max_point[0] - min_point[0],
+                height: max_point[1] - min_point[1],
+            };
+            console.log(x);
+            return x;
+        },
         ...mapGetters([ 'center_on' ]),
         pan_coords: function() {
             if( !this.center_on ) return null;
-            let coords = coords2map(this.center_on);
-            return {
-                x: coords[0],
-                y: coords[1],
-            };
+            return coords2map(this.center_on);
         }
     },
     methods: {
+        register_svgpanzoom: function(svgpanzoom) { this.svgpanzoom =
+                svgpanzoom;
+                window.ssh = svgpanzoom
+        },
         debug: function(svg) {
             window.ssh = svg;
+            this.battle_area;
         }
     },
 };
