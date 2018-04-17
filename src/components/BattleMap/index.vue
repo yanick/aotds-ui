@@ -1,29 +1,21 @@
 <template>
-    <SvgPanZoom :panTo="pan_coords" >
-    <svg id="battleMap" >
+    <div>
+    <svg id="battleMap" @mousemove="mousemove"
+        @mousedown="set_panning">
 
-          <g>
-        <rect v-bind="battle_area"  fill="none" stroke="none" />
-        <ShipCourse v-for="ship in ships" :ship="ship"
-            />
+          <g id="pan_translate" >
+        <ShipCourse v-for="ship in ships" :ship="ship" />
 
          <Ship v-for="ship in ships" :ship="ship" /> 
           </g>
     </svg>
-      <svg id="thumbView" class="thumbViewClass" slot="thumbnail">
-          <g>
-            <rect v-bind="battle_area" fill="none" stroke="none" />
-
-            <Ship v-for="ship in ships" :ship="ship" />
-          </g>
-
-      </svg>
-    </SvgPanZoom>
+    </div>
 </template>
 
 <script>
+import SVG from 'svg.js';
 import fp from 'lodash/fp';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import Ship from './Ship.vue';
 import ShipCourse from './ShipCourse.vue';
@@ -34,47 +26,70 @@ import { coords2map } from './utils';
 
 const min_max = fp.over([ Math.min, Math.max ]);
 
+const dist_from = origin => coords => fp.sum( [0,1]
+    .map( i => origin[0] - coords[0] )
+    .map( i => i*i ) );
+
 export default {
-    data: () => ({ svgpanzoom: null }),
+    data: () => ({ svgpanzoom: null, previous_point: [0,0] }),
     components: { Ship, ShipCourse, SvgPanZoom },
     computed: {
-        ships: function(){ return this.$store.getters.get_ships },
-        battle_area: function() {
-            console.log('ah');
-            if (!this.ships || this.ships.length == 0) return;
-            console.log('oh');
-            console.log(this.ships);
-            let max_velocity = fp.max( this.ships.map( s => s.navigation.velocity ) );
-            let coords = fp.map( 'navigation.coords' )(this.ships);
-            let mm = [ 0, 1 ].map( i => coords.map( c => c[i] ) ).map( x =>
-                min_max(...x) );
-
-            let min_point = coords2map([ 
-                mm[0][0] - max_velocity,
-                mm[1][1] - max_velocity,
-            ]);
-
-            let max_point = coords2map([
-                mm[0][1] + max_velocity,
-                mm[1][0] + max_velocity,
-            ]);
-
-            let x = {
-                x: min_point[0],
-                y: min_point[1],
-                width: max_point[0] - min_point[0],
-                height: max_point[1] - min_point[1],
-            };
-            console.log(x);
-            return x;
-        },
         ...mapGetters([ 'center_on' ]),
-        pan_coords: function() {
+        middle_ship_coords: function() {
+            if(!this.ships || this.ships.length === 0 ) {
+                return [0,0];
+            }
+
+            let coords = this.ships.map( fp.get('navigation.coords') );
+            let middle = fp.pipe(
+                fp.map( i => coords.map( c => c[i] ) ),
+                fp.map( fp.mean ),
+            )([0,1]);
+
+            let closest = fp.minBy( dist_from(middle) )( coords );
+
+            return closest;
+
+        },
+        panner: function () {
+            return SVG.select('g#pan_translate')
+        },
+        ships: function(){ return this.$store.getters.get_ships },
+    },
+    watch: {
+        middle_ship_coords: function(v) {
+            if( this.center_on ) return;
+
+            this.action_center_on(v);
+        },
+        center_on: function() {
             if( !this.center_on ) return null;
-            return coords2map(this.center_on);
-        }
+            let point = coords2map(this.center_on);
+            this.previous_point = this.next_point;
+            let bbox = [ this.$el.offsetWidth, this.$el.offsetHeight ];
+
+            let trans= [0,1].map( i => bbox[i]/2 - point[i] );
+            
+            SVG.select('g#pan_translate').animate(500, '-').move( ...trans );
+        },
     },
     methods: {
+        action_center_on: function(coords) {
+            this.$store.dispatch( 'center_on', coords );
+        },
+        mousemove({clientX,clientY, buttons}) {
+            if(! buttons & 1 ) return;
+
+            let delta = [ clientX - this.previous_point[0], clientY -
+                this.previous_point[1] ];
+
+            this.previous_point = [ clientX, clientY ];
+            
+            this.panner.dmove(...delta);
+        },
+        set_panning: function({ clientX, clientY }) {
+            this.previous_point = [ clientX, clientY ];
+        },
         register_svgpanzoom: function(svgpanzoom) { this.svgpanzoom =
                 svgpanzoom;
                 window.ssh = svgpanzoom
