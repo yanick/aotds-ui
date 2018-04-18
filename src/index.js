@@ -1,10 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import Main from './components/Main';
 
+import Store from './store';
+
+import Actions from './store/actions';
+
+let store = Store();
+
+store.dispatch( Actions.fetch_battle('epsilon') );
+
 ReactDOM.render(
-    <Main />,
+    <Provider store={store}>
+        <Main />
+    </Provider>,
   document.getElementById('app')
 );
 
