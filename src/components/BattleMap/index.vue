@@ -35,7 +35,7 @@ export default {
     components: { Ship, ShipCourse, SvgPanZoom },
     computed: {
         ...mapGetters([ 'center_on' ]),
-        middle_ship_coords: function() {
+        middle_ship: function() {
             if(!this.ships || this.ships.length === 0 ) {
                 return [0,0];
             }
@@ -46,9 +46,10 @@ export default {
                 fp.map( fp.mean ),
             )([0,1]);
 
-            let closest = fp.minBy( dist_from(middle) )( coords );
+            let closest = fp.minBy( s => dist_from(middle)(
+                s.navigation.coords ) )( this.ships );
 
-            return closest;
+            return closest.id;
 
         },
         panner: function () {
@@ -57,15 +58,14 @@ export default {
         ships: function(){ return this.$store.getters.get_ships },
     },
     watch: {
-        middle_ship_coords: function(v) {
+        middle_ship: function(v) {
             if( this.center_on ) return;
 
-            this.action_center_on(v);
+            this.select_object(v);
         },
         center_on: function() {
             if( !this.center_on ) return null;
             let point = coords2map(this.center_on);
-            this.previous_point = this.next_point;
             let bbox = [ this.$el.offsetWidth, this.$el.offsetHeight ];
 
             let trans= [0,1].map( i => bbox[i]/2 - point[i] );
@@ -74,8 +74,8 @@ export default {
         },
     },
     methods: {
-        action_center_on: function(coords) {
-            this.$store.dispatch( 'center_on', coords );
+        select_object: function(id) {
+            this.$store.dispatch( 'select_object', id );
         },
         mousemove({clientX,clientY, buttons}) {
             if(! buttons & 1 ) return;

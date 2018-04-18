@@ -23,8 +23,6 @@
 import _ from 'lodash';
 import fp from 'lodash/fp';
 
-import { plot_movement } from '../../../node_modules/aotds-battle/lib/movement';
-
 import { coords2map, heading2angle } from './utils';
 
 export default {
@@ -32,8 +30,7 @@ export default {
     computed: {
         has_course: function() { return !!this.course },
         course: function() { 
-            return fp.get( 'navigation' )(plot_movement( this.ship,
-                fp.get('orders.navigation')(this.ship) ));
+            return fp.get('navigation.course')(this.ship);
         },
         path: function() {
             return 'M ' + 
