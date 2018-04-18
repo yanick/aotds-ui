@@ -2,6 +2,6 @@
     "plugins":
     ["transform-decorators-legacy","transform-class-properties","transform-function-bind","transform-async-to-generator"],
     "presets":[
-        "env", "stage-1", "stage-0"
+        "env", "react", "stage-1", "stage-0"
     ]
 }

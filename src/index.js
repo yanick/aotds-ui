@@ -1,18 +1,31 @@
-import 'babel-register';
-import 'babel-polyfill';
-import Vue from 'vue';
-import './store/vuex';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import store from './store';
+import Main from './components/Main';
+
+ReactDOM.render(
+    <Main />,
+  document.getElementById('app')
+);
+
+module.hot.accept();
 
 
-store.dispatch( 'fetch_game', 'epsilon' );
+// import 'babel-register';
+// import 'babel-polyfill';
+// import Vue from 'vue';
+// import './store/vuex';
 
-import Main from './components/Main.vue';
+// import store from './store';
 
-new Vue({
-  el: '#app',
-    store,
-    components: { Main },
-  template: "<Main />"
-})
+
+// store.dispatch( 'fetch_game', 'epsilon' );
+
+// import Main from './components/Main.vue';
+
+// new Vue({
+//   el: '#app',
+//     store,
+//     components: { Main },
+//   template: "<Main />"
+// })
