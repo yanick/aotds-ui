@@ -26,10 +26,6 @@ import { coords2map } from './utils';
 
 const min_max = fp.over([ Math.min, Math.max ]);
 
-const dist_from = origin => coords => fp.sum( [0,1]
-    .map( i => origin[0] - coords[0] )
-    .map( i => i*i ) );
-
 export default {
     data: () => ({ svgpanzoom: null, previous_point: [0,0] }),
     components: { Ship, ShipCourse, SvgPanZoom },
@@ -40,17 +36,6 @@ export default {
                 return [0,0];
             }
 
-            let coords = this.ships.map( fp.get('navigation.coords') );
-            let middle = fp.pipe(
-                fp.map( i => coords.map( c => c[i] ) ),
-                fp.map( fp.mean ),
-            )([0,1]);
-
-            let closest = fp.minBy( s => dist_from(middle)(
-                s.navigation.coords ) )( this.ships );
-
-            return closest.id;
-
         },
         panner: function () {
             return SVG.select('g#pan_translate')
@@ -58,37 +43,12 @@ export default {
         ships: function(){ return this.$store.getters.get_ships },
     },
     watch: {
-        middle_ship: function(v) {
-            if( this.center_on ) return;
-
-            this.select_object(v);
-        },
-        center_on: function() {
-            if( !this.center_on ) return null;
-            let point = coords2map(this.center_on);
-            let bbox = [ this.$el.offsetWidth, this.$el.offsetHeight ];
-
-            let trans= [0,1].map( i => bbox[i]/2 - point[i] );
-            
-            SVG.select('g#pan_translate').animate(500, '-').move( ...trans );
-        },
     },
     methods: {
         select_object: function(id) {
             this.$store.dispatch( 'select_object', id );
         },
         mousemove({clientX,clientY, buttons}) {
-            if(! buttons & 1 ) return;
-
-            let delta = [ clientX - this.previous_point[0], clientY -
-                this.previous_point[1] ];
-
-            this.previous_point = [ clientX, clientY ];
-            
-            this.panner.dmove(...delta);
-        },
-        set_panning: function({ clientX, clientY }) {
-            this.previous_point = [ clientX, clientY ];
         },
         register_svgpanzoom: function(svgpanzoom) { this.svgpanzoom =
                 svgpanzoom;
