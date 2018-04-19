@@ -90,10 +90,20 @@ export default () => {
         state.user = { player: localStorage.player, token: localStorage.token }
     }
 
-    return createStore( reducer, state,
+    let store = createStore( reducer, state,
    composeEnhancers( applyMiddleware( MW_fetch_game, MW_auth_user, MW_auth_user_success ) )
 //    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
+    
+    if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    // module.hot.accept('../reducers', () => {
+    //   const nextRootReducer = require('../reducers/index');
+    //   store.replaceReducer(nextRootReducer);
+    // });
+
+    return store;
+  }
 };
 
 
