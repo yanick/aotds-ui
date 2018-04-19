@@ -18,7 +18,7 @@ module.exports = {
   },
   module: {
     rules: [
-//        { test: /\.(woff|ttf|eot)$/i, loader: 'null-loader' },
+        { test: /\.(woff|ttf|eot)$/i, loader: 'null-loader' },
 //      { test: /\.svg$/, loader: 'svg-sprite-loader' },
       {  test: /\.css$/, use: [
            'style-loader',

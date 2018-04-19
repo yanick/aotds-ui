@@ -9,6 +9,7 @@ import './style.css';
 import Actions from '../../store/actions';
 
 import MapObject from './MapObject';
+import ObjectCourse from './ObjectCourse';
 
 const debug = require('debug')('aotds:app');
 
@@ -69,6 +70,9 @@ class BattleMap extends React.Component {
             onMouseDown={this.set_panning }>
 
           <g id="pan_translate" >
+            { this.props.objects.map( o => 
+                <ObjectCourse object={o} /> 
+            ) }
 
             { this.props.objects.map( o => 
                 <MapObject object={o} /> 

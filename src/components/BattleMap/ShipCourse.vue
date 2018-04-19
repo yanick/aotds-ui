@@ -32,12 +32,6 @@ export default {
         course: function() { 
             return fp.get('navigation.course')(this.ship);
         },
-        path: function() {
-            return 'M ' + 
-                    fp.getOr([])('trajectory')(this.course
-                    ).map( p => p.coords ).map( coords2map )
-                    .map( c => c.join( ',' ) ).join( ' L ' ) ; 
-        },
         coordsTransform: function() {
             if( !this.has_course ) return '';
             let t = coords2map(this.course.coords).join(',');

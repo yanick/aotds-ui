@@ -8,6 +8,10 @@ import Store from './store';
 
 import Actions from './store/actions';
 
+import "normalize.css/normalize.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+
 let store = Store();
 
 store.dispatch( Actions.fetch_battle('epsilon') );

@@ -14,5 +14,5 @@ actioner.$add( 'auth_user_success', ( player, token ) => ({ player, token }) );
 
 actioner.$add( 'logout' );
 
-actioner.$add( 'select_object', object_id => ({ object_id }) );
+actioner.$add( 'select_object', object_id =>({ object_id })  );
 actioner.$add( 'center_on', coords => ({ coords }) );

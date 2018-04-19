@@ -4,11 +4,8 @@ import u from 'updeep';
 
 import user from './user';
 import ui from './ui';
-
-let reducer = actions_reducer({
-    FETCH_BATTLE_SUCCESS: ({ battle }) => u({ battle: u.constant(battle) }),
-});
+import battle from './battle';
 
 export default pipe_reducers([
-    reducer, combine_reducers({ user, ui }),
+    combine_reducers({ user, ui, battle }),
 ]);

@@ -566,6 +566,26 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@blueprintjs/core@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-2.1.1.tgz#8e7178c7bd0faea53a0f9a25392215a1fe62d05e"
+  dependencies:
+    "@blueprintjs/icons" "^2.1.1"
+    "@types/dom4" "^2.0.0"
+    classnames "^2.2"
+    dom4 "^2.0.1"
+    normalize.css "^7.0.0"
+    popper.js "^1.14.1"
+    react-popper "^0.8.2"
+    tslib "^1.9.0"
+
+"@blueprintjs/icons@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-2.1.1.tgz#426b0291baf198e0181ae8f49bb5c2bc0bb55e9f"
+  dependencies:
+    classnames "^2.2"
+    tslib "^1.9.0"
+
 "@poi/bs-loader@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@poi/bs-loader/-/bs-loader-1.0.0.tgz#493c406a7b747881303ae67f73bbe83ae60a4c3c"
@@ -658,6 +678,10 @@
     glamor "^2.20.40"
     glamorous "^4.12.1"
     prop-types "^15.6.1"
+
+"@types/dom4@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/dom4/-/dom4-2.0.0.tgz#00dc42fed6b36a7a6dabb8f7a9c9e678ee644e05"
 
 abbrev@1:
   version "1.1.1"
@@ -2358,6 +2382,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classnames@^2.2:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
+
 clean-css@4.1.x:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.1.3.tgz#07cfe8980edb20d455ddc23aadcf1e04c6e509ce"
@@ -3166,6 +3194,10 @@ dom-converter@~0.1:
   dependencies:
     utila "~0.3"
 
+dom-helpers@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.3.1.tgz#fc1a4e15ffdf60ddde03a480a9c0fece821dd4a6"
+
 dom-serializer@0, dom-serializer@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.1.0.tgz#073c697546ce0780ce23be4a28e293e40bc30c82"
@@ -3176,6 +3208,10 @@ dom-serializer@0, dom-serializer@~0.1.0:
 dom-walk@^0.1.0:
   version "0.1.1"
   resolved "http://artifactory.shuttercorp.net/artifactory/api/npm/npm-composite/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
+
+dom4@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/dom4/-/dom4-2.0.1.tgz#03000cbea1ec33b3dde8cfd7a0cf77587d27e9d5"
 
 domain-browser@^1.1.1:
   version "1.2.0"
@@ -6079,6 +6115,10 @@ normalize-url@^1.4.0:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+normalize.css@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
+
 npm-run-path@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-1.0.0.tgz#f5c32bf595fe81ae927daec52e82f8b000ac3c8f"
@@ -6546,6 +6586,10 @@ poi@^10.0.3:
     webpack-merge "^4.1.0"
     webpack-node-externals "^1.7.2"
     yarn-global "^1.1.0"
+
+popper.js@^1.12.9, popper.js@^1.14.1:
+  version "1.14.3"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.3.tgz#1438f98d046acf7b4d78cd502bf418ac64d4f095"
 
 portfinder@^1.0.9:
   version "1.0.13"
@@ -7428,6 +7472,13 @@ react-onclickoutside@^6.5.0:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.6.3.tgz#f3b9226f4541039d6d5a4a6120c4dfffcf7de60c"
 
+react-popper@^0.8.2:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.8.3.tgz#0f73333137c9fb0af6ec4074d2d0585a0a0461e1"
+  dependencies:
+    popper.js "^1.12.9"
+    prop-types "^15.6.0"
+
 react-redux@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"
@@ -7444,6 +7495,14 @@ react-textarea-autosize@^5.2.1:
   resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-5.2.1.tgz#2b78f9067180f41b08ac59f78f1581abadd61e54"
   dependencies:
     prop-types "^15.6.0"
+
+react-transition-group@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.3.1.tgz#31d611b33e143a5e0f2d94c348e026a0f3b474b6"
+  dependencies:
+    dom-helpers "^3.3.1"
+    loose-envify "^1.3.1"
+    prop-types "^15.6.1"
 
 react@^16.3.2:
   version "16.3.2"
@@ -8808,6 +8867,10 @@ trim-newlines@^1.0.0:
 trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
+
+tslib@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
 
 tty-browserify@0.0.0:
   version "0.0.0"
