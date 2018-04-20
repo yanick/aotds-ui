@@ -12,7 +12,7 @@ import MapObject from './MapObject';
 
 function path_for( trajectory = [] ) {
     return 'M ' + 
-            trajectory.map( p => p.coords ).map( coords2map )
+            trajectory.map( p => p.coords ).filter( p => p ).map( coords2map )
             .map( c => c.join( ',' ) ).join( ' L ' ) ; 
 }
 export default ({ object }) => {

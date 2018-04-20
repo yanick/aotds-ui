@@ -3,6 +3,7 @@ import HeadSection from './HeadSection';
 
 import BattleMap from './BattleMap';
 import ListObjects from './ListObjects';
+import CommandPanel from './CommandPanel';
 
 import { Tab, Tabs } from "@blueprintjs/core";
  
@@ -14,9 +15,9 @@ export default () => <div>
     <div id="main_section">
         <div id="battlemap"> <BattleMap /></div>
         <div id="rightcolumn">
-            <Tabs>
+            <Tabs renderActiveTabPanelOnly={true}>
                 <Tab id="ships" title="ships" panel={ <ListObjects /> } />
-                <Tab id="controls" title="controls" panel="" />
+                <Tab id="controls" title="command" panel={ <CommandPanel /> } />
             </Tabs>
         </div>
     </div>
