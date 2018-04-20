@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import fp from 'lodash/fp';
 import u from 'updeep';
 
-import { ProgressBar } from '@blueprintjs/core';
+import { ProgressBar, Button } from '@blueprintjs/core';
 
 import FieldSet from './FieldSet';
 import Navigation from './Navigation';
@@ -14,6 +14,7 @@ import Actions from '../../store/actions';
 class CommandPanel extends React.Component {
     render() {
         if(!this.props.bogey) return null;
+        console.log( this.props.send_orders )
 
         let drive_fraction = this.props.bogey.drive.current / this.props.bogey.drive.rating;
 
@@ -36,11 +37,16 @@ class CommandPanel extends React.Component {
               </div>
           </div>
 
+            <Button
+                text="send orders"
+                onClick={ this.props.send_orders }
+                />
+
             <Navigation 
                 maneuvers={ fp.get('navigation.course.maneuvers')(this.props.bogey)  }
                 orders={ fp.get('orders.navigation')(this.props.bogey) }
                 amend_orders={ orders => this.props.amend_orders(
-                    this.props.bogey.id, { navigation: orders }
+                    { navigation: orders }
                 ) }
                     />
 
@@ -55,15 +61,24 @@ const selected_bogey = state => {
     let id = fp.get('ui.selected_object_id')(state);
     return fp.getOr([])('battle.objects')(state).find( o => o.id === id );
 };
+import { bindActionCreators } from 'redux';
+
+const mapDispatches = dispatch => ({
+        amend_orders: id => orders => dispatch(Actions.amend_orders( id, orders )),
+        send_orders: id => () => dispatch(Actions.send_orders( id )),
+});
 
 export default connect(
     state => ({ 
         bogey: selected_bogey(state),
     }),
-    dispatch => ({
-        amend_orders: ( object_id, orders ) => dispatch(
-            Actions.amend_orders( object_id, orders ) ) 
-    }),
+    mapDispatches,
+    (stateProps, dispatchProps, ownProps) => ({
+        ...stateProps,
+        ...ownProps,
+        amend_orders: dispatchProps.amend_orders( stateProps.bogey.id ),
+        send_orders: dispatchProps.send_orders( stateProps.bogey.id ),
+    })
 )( CommandPanel );
 
 // <template>
