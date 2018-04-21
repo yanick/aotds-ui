@@ -15,8 +15,29 @@ const bogey_reducer = actions_reducer({
         ) }})(state)
         return state;
 
-    }
+    },
+    SEND_ORDERS_SUCCESS: action => state => {
+        if( action.bogey.id !== state.id ) return state;
+        state = action.bogey;
+        console.log(
+                    plot_movement(state, fp.get('orders.navigation')(state) )
+        );
+        state = u({ navigation: { course: u.constant(
+                    plot_movement(state, fp.get('orders.navigation')(state) )
+                ) }})(state);
+        return state;
+
+    },
 });
+
+const array_reducer = reducer => action => state => state.map(
+    item => reducer(item,action)
+);
+
+const map_bogeys = array_reducer(bogey_reducer);
+
+const bogeys_reducer = map_bogeys;
+
 
 export default actions_reducer({
     FETCH_BATTLE_SUCCESS: ({ battle }) => {
@@ -26,6 +47,7 @@ export default actions_reducer({
                 ) }})(o)
             ) })(battle);
     },
+    SEND_ORDERS_SUCCESS: action => u({ objects: bogeys_reducer(action) }),
     AMEND_ORDERS: action => store => {
         store = u({ 
             objects: u.map( 

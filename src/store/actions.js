@@ -18,4 +18,6 @@ actioner.$add( 'select_object', object_id =>({ object_id })  );
 actioner.$add( 'center_on', coords => ({ coords }) );
 
 actioner.$add( 'amend_orders', (object_id,orders) => ({ object_id, orders }) );
-actioner.$add( 'send_orders', object_id => ({ object_id }) );
+
+actioner.$add( 'send_orders', (object_id,orders) => ({ object_id, orders }) );
+actioner.$add( 'send_orders_success', bogey => ({ bogey }) );

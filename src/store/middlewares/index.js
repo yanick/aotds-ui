@@ -1,6 +1,16 @@
 import fp from 'lodash/fp';
 import Actions from '../actions';
 
+import Rest from 'another-rest-client';
+
+const rest_client = new Rest( 'http://localhost:3000/api' );
+rest_client.res({
+    battle: {
+        ship: 'orders'
+    },
+});
+
+
 function mw_for( target, inner ) {
     return store => next => action => {
         let func = next;
@@ -44,6 +54,16 @@ const MW_logout = mw_for( 'LOGOUT', () => next => action => {
 
     delete localStorage.player;
     delete localStorage.token;
+});
+
+const MW_send_orders = mw_for( Actions.SEND_ORDERS, ({dispatch,getState}) => next => action => {
+    next(action);
+
+    let state = getState();
+    let battle_id = fp.get( 'battle.game.name' )( state );
+
+    rest_client.battle(battle_id).ship(action.object_id).orders.post(
+        action.orders ).then( bogey => dispatch( Actions.send_orders_success( bogey ) ) );
 });
 
 const MW_fetch_game = mw_for( 'FETCH_BATTLE', ({dispatch}) => next => action => {
@@ -100,5 +120,5 @@ const MW_center_on_select = mw_for( Actions.SELECT_OBJECT, ({dispatch, getState}
 
 
 export default [MW_fetch_game, MW_auth_user, MW_auth_user_success,
-    MW_initial_select, MW_center_on_select
+    MW_initial_select, MW_center_on_select, MW_send_orders
 ];

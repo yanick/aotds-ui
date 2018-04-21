@@ -65,7 +65,7 @@ import { bindActionCreators } from 'redux';
 
 const mapDispatches = dispatch => ({
         amend_orders: id => orders => dispatch(Actions.amend_orders( id, orders )),
-        send_orders: id => () => dispatch(Actions.send_orders( id )),
+        send_orders: (id,orders) => () => dispatch(Actions.send_orders( id,orders )),
 });
 
 export default connect(
@@ -76,8 +76,8 @@ export default connect(
     (stateProps, dispatchProps, ownProps) => ({
         ...stateProps,
         ...ownProps,
-        amend_orders: dispatchProps.amend_orders( stateProps.bogey.id ),
-        send_orders: dispatchProps.send_orders( stateProps.bogey.id ),
+        amend_orders: dispatchProps.amend_orders( fp.get('bogey.id')(stateProps) ),
+        send_orders: dispatchProps.send_orders( fp.get('bogey.id')(stateProps), fp.get('bogey.orders')(stateProps)),
     })
 )( CommandPanel );
 
