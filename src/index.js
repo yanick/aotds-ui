@@ -16,6 +16,19 @@ let store = Store();
 
 store.dispatch( Actions.fetch_battle('epsilon') );
 
+// Create WebSocket connection.
+const ws_client = new WebSocket('ws://localhost:3001');
+
+ws_client.addEventListener('open', function (event) {
+    ws_client.send( JSON.stringify({ battle: 'epsilon' }) );
+});
+
+// Listen for messages
+ws_client.addEventListener('message', function (event) {
+    console.log(event);
+    store.dispatch( JSON.parse(event.data) );
+});
+
 ReactDOM.render(
     <Provider store={store}>
         <Main />

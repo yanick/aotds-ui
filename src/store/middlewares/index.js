@@ -23,6 +23,13 @@ function mw_for( target, inner ) {
     };
 }
 
+const MW_new_turn_available = mw_for( 'NEW_TURN_AVAILABLE', ({dispatch,getState}) => next => action => {
+    next(action);
+    dispatch(Actions.fetch_battle( 
+        getState().battle.game.name
+    ) );
+});
+
 const MW_auth_user_success = mw_for( 'AUTH_USER_SUCCESS', ({dispatch}) => next => action => {
     console.log("!!!");
     next(action);
@@ -63,7 +70,7 @@ const MW_send_orders = mw_for( Actions.SEND_ORDERS, ({dispatch,getState}) => nex
     let battle_id = fp.get( 'battle.game.name' )( state );
 
     rest_client.battle(battle_id).ship(action.object_id).orders.post(
-        action.orders ).then( bogey => dispatch( Actions.send_orders_success( bogey ) ) );
+        action.orders || {} ).then( bogey => dispatch( Actions.send_orders_success( bogey ) ) );
 });
 
 const MW_fetch_game = mw_for( 'FETCH_BATTLE', ({dispatch}) => next => action => {
@@ -74,6 +81,7 @@ const MW_fetch_game = mw_for( 'FETCH_BATTLE', ({dispatch}) => next => action => 
     }).then( r => r.json() )
     .then( battle => dispatch( Actions.fetch_battle_success(battle) ) )
     .catch( e => console.log("failed to grab battle", e) );
+
 });
 
 const dist_from = origin => coords => fp.sum( [0,1]
@@ -96,10 +104,13 @@ function find_center_ship(objects) {
 
 
 // start by zeroing in on the middle ship
-const MW_initial_select = mw_for( 'FETCH_BATTLE_SUCCESS', ({dispatch}) => next => action => {
+const MW_initial_select = mw_for( 'FETCH_BATTLE_SUCCESS', ({dispatch,getState}) => next => action => {
     console.log(1);
     next(action);
     console.log(2);
+
+    // already selected? Okay, fine
+    if( fp.get('ui.selected_object_id')(getState()) ) return;
 
     let ship = find_center_ship( action.battle.objects );
 
@@ -120,5 +131,6 @@ const MW_center_on_select = mw_for( Actions.SELECT_OBJECT, ({dispatch, getState}
 
 
 export default [MW_fetch_game, MW_auth_user, MW_auth_user_success,
-    MW_initial_select, MW_center_on_select, MW_send_orders
+    MW_initial_select, MW_center_on_select, MW_send_orders,
+    MW_new_turn_available
 ];

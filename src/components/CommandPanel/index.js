@@ -12,6 +12,8 @@ import Navigation from './Navigation';
 import Actions from '../../store/actions';
 
 class CommandPanel extends React.Component {
+    orders_sent = () => !!fp.get('bogey.orders.done')(this.props);
+
     render() {
         if(!this.props.bogey) return null;
         console.log( this.props.send_orders )
@@ -21,7 +23,6 @@ class CommandPanel extends React.Component {
         let drive_class  = drive_fraction < 1 ? 'pt-intent-warning' : 'pt-intent-primary';
 
         drive_class = drive_class + ' pt-no-stripes'
-
 
         return <div className="command_panel">
             <div>
@@ -37,12 +38,15 @@ class CommandPanel extends React.Component {
               </div>
           </div>
 
+            <fieldset disabled={this.orders_sent()}>
             <Button
-                text="send orders"
+                text={ this.orders_sent() ? 'orders sent' : "send orders" }
                 onClick={ this.props.send_orders }
                 />
 
             <Navigation 
+                drive_rating={ fp.getOr(0)('drive.current')(this.props.bogey) }
+                disabled={ this.orders_sent() }
                 maneuvers={ fp.get('navigation.course.maneuvers')(this.props.bogey)  }
                 orders={ fp.get('orders.navigation')(this.props.bogey) }
                 amend_orders={ orders => this.props.amend_orders(
@@ -51,6 +55,7 @@ class CommandPanel extends React.Component {
                     />
 
 
+            </fieldset>
 
             </div>
         </div>;
