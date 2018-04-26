@@ -8,8 +8,10 @@ import { ProgressBar, Button } from '@blueprintjs/core';
 
 import FieldSet from './FieldSet';
 import Navigation from './Navigation';
+import Weaponry from './Weaponry';
 
 import Actions from '../../store/actions';
+
 
 class CommandPanel extends React.Component {
     orders_sent = () => !!fp.get('bogey.orders.done')(this.props);
@@ -56,6 +58,14 @@ class CommandPanel extends React.Component {
 
 
             </fieldset>
+
+            { this.props.bogey.weaponry &&
+                <Weaponry 
+                    bogey_id={ this.props.bogey.id }
+                    weaponry={ this.props.bogey.weaponry }
+                />
+            }
+
 
             </div>
         </div>;
