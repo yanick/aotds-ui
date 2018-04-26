@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import fp from 'lodash/fp';
 import u from 'updeep';
@@ -13,7 +14,6 @@ const grid = 8;
 
 import FireconGroup from './FireconGroup';
 
-export default
 class Weaponry extends React.Component {
 
     constructor(props) {
@@ -40,20 +40,7 @@ class Weaponry extends React.Component {
         // dropped outside the list
         if (!result.destination) { return; }
 
-        debug( result );
-
-        debug( result.draggableId );
-        let state = u({ firecons: 
-            u.map({ weapons:  w => w.filter( w => w.id != result.draggableId )  }) 
-        }
-        ) (this.state );
-
-        state = u({ firecons: u.map( u.if(  f=> f.id === parseInt(result.destination.droppableId), {
-            weapons: w => [ ...w, { id: result.draggableId, name: 'hacky' } ] 
-        }))})(state);
-
-        debug(state);
-        this.setState(state);
+        this.props.weapon_firecon( result.draggableId, parseInt( result.destination.droppableId ) );
     }
 
 
@@ -79,6 +66,17 @@ class Weaponry extends React.Component {
     }
 
 } 
+
+import Actions from '../../../store/actions';
+
+export default connect(
+    null,
+    (dispatch,ownProps) => ({
+        weapon_firecon: (weapon_id, firecon_id) => dispatch( Actions.weapon_firecon(
+            ownProps.bogey_id, weapon_id, firecon_id
+        ) )
+    }),
+)(Weaponry);
     
                 // <fieldset><legend>unassigned</legend>
                 //     <div>Beam class 1</div>

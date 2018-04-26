@@ -21,3 +21,5 @@ actioner.$add( 'amend_orders', (object_id,orders) => ({ object_id, orders }) );
 
 actioner.$add( 'send_orders', (object_id,orders) => ({ object_id, orders }) );
 actioner.$add( 'send_orders_success', bogey => ({ bogey }) );
+
+actioner.$add( 'weapon_firecon', (bogey_id, weapon_id, firecon_id) => ({ bogey_id, weapon_id, firecon_id }) );

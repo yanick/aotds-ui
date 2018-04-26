@@ -6,7 +6,16 @@ import _ from 'lodash';
 
 import { plot_movement } from '../../../../node_modules/aotds-battle/lib/movement';
 
+const weapon_reducer = actions_reducer({
+    WEAPON_FIRECON: action => u.if( _.matches({ id: action.weapon_id }),
+        { firecon_id: action.firecon_id || null }
+    )
+});
+
 const bogey_reducer = actions_reducer({
+    WEAPON_FIRECON: action => u.if(_.matches({ id: action.bogey_id }), {
+        weaponry: { weapons: u.map( w => weapon_reducer(w,action) ) } 
+    }),
     AMEND_ORDERS: ({orders}) => state => {
         console.log(orders, " ", state );
         state = u({ orders })(state);
@@ -23,16 +32,15 @@ const bogey_reducer = actions_reducer({
     },
 });
 
-const array_reducer = reducer => action => state => state.map(
+const array_reducer = reducer => (state = [],action) => state.map(
     item => reducer(item,action)
 );
 
-const map_bogeys = array_reducer(bogey_reducer);
-
-const bogeys_reducer = map_bogeys;
+const bogeys_reducer = array_reducer(bogey_reducer);
 
 
 export default actions_reducer({
+    WEAPON_FIRECON: action => u({ objects:  o => bogeys_reducer(o,action) }),
     FETCH_BATTLE_SUCCESS: ({ battle }) => {
         return () => u({ objects: u.map(
                 o => u({ navigation: { course: u.constant(
@@ -40,7 +48,7 @@ export default actions_reducer({
                 ) }})(o)
             ) })(battle);
     },
-    SEND_ORDERS: action => u({ objects: bogeys_reducer(action) }),
+    SEND_ORDERS: action => u({ objects: o => bogeys_reducer(o,action) }),
     AMEND_ORDERS: action => store => {
         store = u({ 
             objects: u.map( 
