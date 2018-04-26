@@ -29,8 +29,8 @@ class CommandPanel extends React.Component {
         return <div className="command_panel">
             <div>
                 <div className="bogey_name">{this.props.bogey.name}</div>
-          <div>heading: { this.props.bogey.heading } 
-              velocity: { this.props.bogey.velocity }
+          <div>heading: { this.props.bogey.navigation.heading } 
+              velocity: { this.props.bogey.navigation.velocity }
               <div>
                   drive rating: { this.props.bogey.drive.current } / { this.props.bogey.drive.rating }
             <ProgressBar 

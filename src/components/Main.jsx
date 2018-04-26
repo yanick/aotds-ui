@@ -16,8 +16,8 @@ export default () => <div>
         <div id="battlemap"> <BattleMap /></div>
         <div id="rightcolumn">
             <Tabs renderActiveTabPanelOnly={true}>
-                <Tab id="ships" title="ships" panel={ <ListObjects /> } />
                 <Tab id="controls" title="command" panel={ <CommandPanel /> } />
+                <Tab id="ships" title="ships" panel={ <ListObjects /> } />
             </Tabs>
         </div>
     </div>

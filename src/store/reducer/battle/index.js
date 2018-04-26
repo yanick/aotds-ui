@@ -12,9 +12,24 @@ const weapon_reducer = actions_reducer({
     )
 });
 
+const weapons_orders_reducer = actions_reducer({
+    WEAPON_FIRECON: action => state => {
+        let { weapon_id, firecon_id } = action;
+
+        if ( state.find( o => o.weapon_id === weapon_id ) ) {
+            return u.map(
+                u.if( _.matches({ weapon_id }), { firecon_id } )
+            )(state)
+        }
+
+        return [ ...state,  { weapon_id, firecon_id } ];
+    },
+},[]);
+
 const bogey_reducer = actions_reducer({
     WEAPON_FIRECON: action => u.if(_.matches({ id: action.bogey_id }), {
-        weaponry: { weapons: u.map( w => weapon_reducer(w,action) ) } 
+        weaponry: { weapons: u.map( w => weapon_reducer(w,action) ) },
+        orders: { weaponry: { weapons: w => weapons_orders_reducer(w, action ) } },
     }),
     AMEND_ORDERS: ({orders}) => state => {
         console.log(orders, " ", state );
