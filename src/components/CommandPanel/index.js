@@ -61,6 +61,7 @@ class CommandPanel extends React.Component {
 
             { this.props.bogey.weaponry &&
                 <Weaponry 
+                    bogey={ this.props.bogey }
                     bogey_id={ this.props.bogey.id }
                     weaponry={ this.props.bogey.weaponry }
                 />

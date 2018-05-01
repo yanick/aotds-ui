@@ -8,18 +8,24 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const debug = require('debug')('aotds:command');
 
-const grid = 8;
-
-
-
 import FireconGroup from './FireconGroup';
+
+const grid = 8;
 
 class Weaponry extends React.Component {
 
     constructor(props) {
         super(props);
+    }
 
-        this.state = { firecons: [] }
+    targets = () => {
+        let bogeys = this.props.bogeys.filter( b => b.id !== this.props.bogey_id );
+
+        let origin = this.props.bogey.navigation.coords;
+        const dist =  ({navigation: coords }) => fp.sum( [0,1].map( i => coords[i] - origin[i] 
+        ).map( x => x*x ) );
+
+        return fp.sortBy(dist)(bogeys);
     }
 
     firecon_weapons = () => {
@@ -56,6 +62,7 @@ class Weaponry extends React.Component {
         [ 0, ...(this.props.weaponry.firecons.map( f => f.id ) ) ]
             .map( id => 
                 <FireconGroup 
+                    targets={this.targets()}
                     key={id}
                     firecon_id={ id } weapons={ grouped[id] } /> ) }
 
@@ -70,7 +77,7 @@ class Weaponry extends React.Component {
 import Actions from '../../../store/actions';
 
 export default connect(
-    null,
+    state => ({ bogeys: fp.getOr([])('battle.objects')(state) }),
     (dispatch,ownProps) => ({
         weapon_firecon: (weapon_id, firecon_id) => dispatch( Actions.weapon_firecon(
             ownProps.bogey_id, weapon_id, firecon_id

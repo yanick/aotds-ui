@@ -12,8 +12,16 @@ const getListStyle = isDraggingOver => ({
 
 import Weapon from './Weapon';
 
-export default({ firecon_id, weapons }) => <fieldset>
+export default({ targets, firecon_id, weapons }) => <fieldset>
     <legend> { firecon_id ? 'Firecon ' + firecon_id : 'unassigned' } </legend>
+
+    { firecon_id > 0 &&
+        <select>
+        <option value=""></option>
+        { targets.map( t => <option value={ t.id }>{ t.name }</option> ) }
+        </select>
+    }
+
     <Droppable key={firecon_id} droppableId={ ""+firecon_id}>
           {(droppableProvided, droppableSnapshot) => (
             <div
