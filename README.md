@@ -1,7 +1,7 @@
 
 ## using poi
 
-
+./node_modules/.bin/start-storybook -p 9009 -c .storybook -s static/
 
 
 ## SVG Pan And Zoom
