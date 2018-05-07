@@ -2,11 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import fp from 'lodash/fp';
+import u from 'updeep';
 
 import { coords2map, heading2angle } from '../utils';
 import Actions from '../../../store/actions';
 
 const coordsTransform = nav => {
+    console.log("transforming", nav);
+    nav = u.if( !nav.coords, { coords: [0,0] } )(nav);
     let t = coords2map( nav.coords ).join(',');
     return `rotate( ${ heading2angle(nav.heading) }, ${ t } ) translate(${ t })`
 };

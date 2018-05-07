@@ -29,10 +29,19 @@ class BattleMap extends React.Component {
 
     componentDidMount() {
         this.setState({ panner: SVG.select('g#pan_translate') });
+        this.center();
     }
 
-    componentWillReceiveProps({center_on}) {
+    componentDidUpdate() {
+        this.center();
+    }
+
+    center() {
+        let  center_on = this.props.center_on;
+        debug( 'SAH!', center_on );
         if(!center_on) return;
+
+        if(!this.state) return;
 
         debug( "must center on ", center_on );
         debug( this.myRef);
