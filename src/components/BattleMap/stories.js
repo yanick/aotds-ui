@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, text, number, boolean } from '@storybook/addon-knobs';
+import { withKnobs, text, number, boolean, array } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
@@ -33,4 +33,17 @@ const stories = storiesOf('BattleMap', module)
     return <Provider store={store}><BattleMap objects={ships} 
             pan_at={ () => true }
             center_on={ [100,-100] }/></Provider>;
-});
+})
+.add('weapon range', () => {
+
+    let ships = [
+        { id: 'Enkidu', navigation: { coords: [ 100, -100], heading: 0 }, 
+            weaponry: { weapons: [ { id: 1, type: 'beam', arcs: array('arcs', ['F']), 
+                level: number('level',3), show_range: true } ] } },
+    ];
+
+    return <Provider store={store}><BattleMap objects={ships} 
+            pan_at={ () => true }
+            center_on={ [100,-100] }/></Provider>;
+})
+;

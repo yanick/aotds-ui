@@ -1,6 +1,9 @@
+const SCALE = 5;
+
+export function scaled(length) { return SCALE * length; }
 
 export function coords2map(coords) {
-    return [ 5*coords[0], -5*coords[1] ]
+    return [ SCALE*coords[0], -SCALE*coords[1] ]
 }
 
 export function heading2angle(heading) {
