@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import fp from 'lodash/fp';
 import u from 'updeep';
 
@@ -11,19 +12,18 @@ function actions_reducer( redactions, initial_state = {} ) {
 
 const debug = require('debug')('aotds:debug');
 
-export
-function combine_reducers( reducers ) {
+export function combine_reducers( reducers ) {
     // first let's get the recursivity out of the way
     reducers = fp.mapValues( red => {
         return fp.isObjectLike(red) ? combine_reducers(red) : red
     }
     )(reducers);
 
-    return (state,action) => {
+    return _.curryRight( function (store,action) {
         let r = fp.mapValues( function(red) { return s => {
             return red(s,action) } } )(reducers);
-        return u(r)(state);
-    }
+        return u(r)(store);
+    });
 }
 
 export

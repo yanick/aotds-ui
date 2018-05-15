@@ -6,6 +6,8 @@ import user from './user';
 import ui from './ui';
 import battle from './battle';
 
+const combined = combine_reducers({ user, ui, battle });
+
 export default pipe_reducers([
-    combine_reducers({ user, ui, battle }),
+    combined,
 ]);
