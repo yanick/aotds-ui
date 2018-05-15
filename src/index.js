@@ -38,6 +38,7 @@ ReactDOM.render(
 
 module.hot.accept();
 
+global.__basedir = __dirname;
 
 // import 'babel-register';
 // import 'babel-polyfill';

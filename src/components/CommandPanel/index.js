@@ -18,7 +18,7 @@ class CommandPanel extends React.Component {
 
     render() {
         if(!this.props.bogey) return null;
-        console.log( this.props.send_orders )
+        console.log( "!!!", this.$store, this.props.bogey )
 
         let drive_fraction = this.props.bogey.drive.current / this.props.bogey.drive.rating;
 

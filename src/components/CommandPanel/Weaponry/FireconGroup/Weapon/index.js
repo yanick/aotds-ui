@@ -1,7 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { arcs } from 'aotds-battle';
 import _ from 'lodash';
 
 const grid = 8;
@@ -19,43 +18,9 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-  let angleInRadians = (angleInDegrees-3) * Math.PI / 6.0;
+import WeaponItem from './WeaponItem';
 
-  return {
-    x: centerX + (radius * Math.cos(angleInRadians)),
-    y: centerY + (radius * Math.sin(angleInRadians))
-  };
-}
-
-function describeArc(x, y, radius, startAngle, endAngle){
-
-    let start = polarToCartesian(x, y, radius, endAngle);
-    let end = polarToCartesian(x, y, radius, startAngle);
-
-    let largeArcFlag = endAngle - startAngle <= 6 ? "0" : "1";
-
-    let d = [
-        "M", 16, 16,
-        "L", start.x, start.y, 
-        "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
-        "Z"
-    ].join(" ");
-
-    return d;       
-}
-
-export const WeaponItem = ({weapon}) => { console.log(weapon); return <div>
-    {weapon.type + '-' + weapon.level}
-    <svg width="32" height="32">
-    { _.flatMap( weapon.arcs, a => arcs[a] ).map( range => {
-        return <path d={describeArc(16,16,16,...range) } />
-    }
-    ) }
-    </svg>
-</div> };
-
-export default ({weapon}) => 
+export default ({weapon,bogey_id}) => 
     <Draggable 
         key={weapon.id} draggableId={weapon.id} index={weapon.id}>
         {(draggableProvided, draggableSnapshot) => (
@@ -68,7 +33,7 @@ export default ({weapon}) =>
                         draggableProvided.draggableProps.style
                       )}
                     >
-                        <WeaponItem weapon={weapon} />
+                        <WeaponItem weapon={weapon} bogey_id={bogey_id} />
                     </div>
                   )}
     </Draggable>;

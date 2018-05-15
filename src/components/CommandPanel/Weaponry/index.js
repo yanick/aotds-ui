@@ -52,6 +52,7 @@ class Weaponry extends React.Component {
 
     render() { 
         let grouped = this.firecon_weapons();
+        console.log( "STORE IS: ", this );
 
         return <fieldset legend="weaponry">
                 <legend>weaponry</legend>
@@ -62,6 +63,7 @@ class Weaponry extends React.Component {
         [ 0, ...(this.props.weaponry.firecons.map( f => f.id ) ) ]
             .map( id => 
                 <FireconGroup 
+                bogey_id={this.props.bogey_id}
                     targets={this.targets()}
                     key={id}
                     firecon_id={ id } weapons={ grouped[id] } /> ) }

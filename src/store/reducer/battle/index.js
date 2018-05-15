@@ -1,4 +1,5 @@
-import Actions from '../../actions';
+import Actions from '~/store/actions';
+
 import { actions_reducer } from '../utils';
 import u from 'updeep';
 import fp from 'lodash/fp';
@@ -7,6 +8,9 @@ import _ from 'lodash';
 import { plot_movement } from '../../../../node_modules/aotds-battle/lib/movement';
 
 const weapon_reducer = actions_reducer({
+    SHOW_WEAPON_ARC: action => u.if( _.matches({ id: action.weapon_id }),
+        { show_range: action.show }
+    ),
     WEAPON_FIRECON: action => u.if( _.matches({ id: action.weapon_id }),
         { firecon_id: action.firecon_id || null }
     )
@@ -27,6 +31,9 @@ const weapons_orders_reducer = actions_reducer({
 },[]);
 
 const bogey_reducer = actions_reducer({
+    SHOW_WEAPON_ARC: action => u.if(_.matches({ id: action.bogey_id }), {
+        weaponry: { weapons: u.map( w => weapon_reducer(w,action) ) },
+    }),
     WEAPON_FIRECON: action => u.if(_.matches({ id: action.bogey_id }), {
         weaponry: { weapons: u.map( w => weapon_reducer(w,action) ) },
         orders: { weaponry: { weapons: w => weapons_orders_reducer(w, action ) } },
@@ -53,8 +60,10 @@ const array_reducer = reducer => (state = [],action) => state.map(
 
 const bogeys_reducer = array_reducer(bogey_reducer);
 
+// TODO break out the battle reducer into smaller reducers
 
 export default actions_reducer({
+    SHOW_WEAPON_ARC: action => u({ objects:  o => bogeys_reducer(o,action) }),
     WEAPON_FIRECON: action => u({ objects:  o => bogeys_reducer(o,action) }),
     FETCH_BATTLE_SUCCESS: ({ battle }) => {
         return () => u({ objects: u.map(
