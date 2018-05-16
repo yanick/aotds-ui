@@ -33,6 +33,20 @@ function describeArc(x, y, radius, startAngle, endAngle){
 import { connect } from 'react-redux';
 import Actions from '../../../../../../store/actions';
 import { arcs } from 'aotds-battle';
+ 
+export
+const  WeaponItem = ({weapon, showArc}) => <div>
+    {weapon.type + '-' + weapon.level}
+    <svg width="32" height="32"
+        onMouseOver={ () => showArc(true) }
+        onMouseOut={ () => showArc(false) }
+        >
+    { _.flatMap( weapon.arcs, a => arcs[a] ).map( range => {
+        return <path d={describeArc(16,16,16,...range) } />
+    }
+    ) }
+    </svg>
+</div>;
 
 export default connect( 
     state => { console.log('das fuck?', state); return {} },
@@ -44,16 +58,5 @@ export default connect(
             Actions.show_weapon_arc( ownProps.bogey_id, ownProps.weapon.id, showIt ) );
         }
     })
-)( ({weapon, showArc}) => <div>
-    {weapon.type + '-' + weapon.level}
-    <svg width="32" height="32"
-        onMouseOver={ () => showArc(true) }
-        onMouseOut={ () => showArc(false) }
-        >
-    { _.flatMap( weapon.arcs, a => arcs[a] ).map( range => {
-        return <path d={describeArc(16,16,16,...range) } />
-    }
-    ) }
-    </svg>
-</div>);
+)(WeaponItem);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, select, number, boolean } from '@storybook/addon-knobs';
 
-import { WeaponItem } from './index';
+import { WeaponItem } from './WeaponItem';
 
 import { arcs } from 'aotds-battle';
 
@@ -15,6 +15,8 @@ const stories = storiesOf('Weapon', module)
    let select_arcs = _.fromPairs(
         _.keys(arcs).map( a => [ a, boolean(a,false) ] )
    );
+
+    console.log( WeaponItem );
 
     const weapon = {
         type: select('type',['beam'], 'beam'),
