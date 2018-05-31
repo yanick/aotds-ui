@@ -37,7 +37,7 @@ const weapons_orders_reducer = actions_reducer({
     },
 },[]);
 
-const bogey_reducer = actions_reducer({
+let inner_bogey_reducer = actions_reducer({
     SHOW_WEAPON_ARC: action => u.if(_.matches({ id: action.bogey_id }), {
         weaponry: { weapons: u.map( w => weapon_reducer(w,action) ) },
     }),
@@ -61,13 +61,20 @@ const bogey_reducer = actions_reducer({
     },
 
     // recompute the movements
-    FETCH_BATTLE_SUCCESS: action => u( ship => {
+    FETCH_BATTLE_SUCCESS: action => ship => {
+        debugger;
+        console.log('YUP'); 
+        return u({
         navigation: { course: u.constant(
             plot_movement(ship, fp.get('orders.navigation')(ship) )
         )}
-    })
+    })(ship) }
     ,
 });
+
+let bogey_reducer = (state,action) => {
+    return inner_bogey_reducer(state,action);
+};
 
 const array_reducer = reducer => (state = [],action) => state.map(
     item => reducer(item,action)

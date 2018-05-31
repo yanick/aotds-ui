@@ -16,5 +16,6 @@ const subreducers = combine_reducers({
 });
 
 export default pipe_reducers([
-    subreducers, actions_red
+    actions_red,
+    subreducers,  
 ]);

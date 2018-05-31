@@ -9,6 +9,7 @@ import { ProgressBar, Button } from '@blueprintjs/core';
 import FieldSet from './FieldSet';
 import Navigation from './Navigation';
 import Weaponry from './Weaponry';
+import Structure from './Structure';
 
 import Actions from '../../store/actions';
 
@@ -58,6 +59,8 @@ class CommandPanel extends React.Component {
 
 
             </fieldset>
+
+            <Structure { ...this.props.bogey.structure } />
 
             { this.props.bogey.weaponry &&
                 <Weaponry 
