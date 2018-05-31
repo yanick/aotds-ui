@@ -19,21 +19,19 @@ module.exports = {
   module: {
     rules: [
         { test: /\.(woff|ttf|eot)$/i, loader: 'null-loader' },
-//      { test: /\.svg$/, loader: 'svg-sprite-loader' },
-      {  test: /\.css$/, use: [
-           'style-loader',
+   {
+        test: /\.css$/,
+        use: [
+          'style-loader',
           { loader: 'css-loader', options: { importLoaders: 1 } },
-          { loader: 'postcss-loader', options: { sourceMap: true }  }, 'resolve-url-loader',
-//          { loader: 'sass-loader', options: { sourceMap: true } }
-      ]
+          { loader: 'postcss-loader'}
+        ]
       },
-//      { test: /\.vue$/, loader: 'vue-loader' },
          { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ['babel-loader'] },
     ],
   },
   resolve: {
        extensions: ['*', '.js', '.jsx'],
-    alias: { 'vue$': 'vue/dist/vue.esm.js' }
   },
   plugins: [HtmlWebpackPluginConfig,
     new webpack.HotModuleReplacementPlugin()

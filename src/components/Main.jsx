@@ -4,6 +4,7 @@ import HeadSection from './HeadSection';
 import BattleMap from './BattleMap';
 import ListObjects from './ListObjects';
 import CommandPanel from './CommandPanel';
+import TurnLog from './TurnLog';
 
 import { Tab, Tabs } from "@blueprintjs/core";
  
@@ -18,6 +19,7 @@ export default () => <div>
             <Tabs renderActiveTabPanelOnly={true}>
                 <Tab id="controls" title="command" panel={ <CommandPanel /> } />
                 <Tab id="ships" title="ships" panel={ <ListObjects /> } />
+                <Tab id="turn_log" title="logs" panel={ <TurnLog /> } />
             </Tabs>
         </div>
     </div>
