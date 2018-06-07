@@ -29,7 +29,11 @@ class CommandPanel extends React.Component {
 
         return <div className="command_panel">
             <div>
-                <div className="bogey_name">{this.props.bogey.name}</div>
+                <div className="bogey_name">
+                    <a href='#' onClick={this.props.center_on}>
+                        {this.props.bogey.name}
+                    </a>
+                </div>
           <div>heading: { this.props.bogey.navigation.heading } 
               velocity: { this.props.bogey.navigation.velocity }
               <div>
@@ -83,8 +87,9 @@ const selected_bogey = state => {
 import { bindActionCreators } from 'redux';
 
 const mapDispatches = dispatch => ({
-        amend_orders: id => orders => dispatch(Actions.amend_orders( id, orders )),
-        send_orders: (id,orders) => () => dispatch(Actions.send_orders( id,orders )),
+    amend_orders: id => orders => dispatch(Actions.amend_orders( id, orders )),
+    send_orders: (id,orders) => () => dispatch(Actions.send_orders( id,orders )),
+    center_on: id => dispatch(Actions.select_object(id)),
 });
 
 export default connect(
@@ -97,6 +102,10 @@ export default connect(
         ...ownProps,
         amend_orders: dispatchProps.amend_orders( fp.get('bogey.id')(stateProps) ),
         send_orders: dispatchProps.send_orders( fp.get('bogey.id')(stateProps), fp.get('bogey.orders')(stateProps)),
+        center_on: e => {
+            e.preventDefault();
+            dispatchProps.center_on(stateProps.bogey.id);
+        },
     })
 )( CommandPanel );
 
