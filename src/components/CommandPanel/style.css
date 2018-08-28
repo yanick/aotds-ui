@@ -1,0 +1,9 @@
+.command_panel .head_section {
+    display: flex;
+    justify-content: flex-end;
+
+    & .bogey_name {
+        flex-grow: 1;
+    }
+}
+
