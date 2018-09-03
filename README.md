@@ -14,3 +14,10 @@ https://github.com/ariutta/svg-pan-zoom
  development",
 
 https://www.robinwieruch.de/minimal-react-webpack-babel-setup/
+
+
+
+## linking the sibling projects
+
+pnpm i ~/work/aotds/battle/
+

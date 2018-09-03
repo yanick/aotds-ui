@@ -10,7 +10,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 })
 
 module.exports = {
-    entry: ['babel-polyfill', 'react-hot-loader/patch', './src/index.js' ],
+    entry: ['babel-polyfill', 'react-hot-loader/patch', './src/index.jsx' ],
   output: {
     path: path.resolve('dist'),
     publicPath: '/',
